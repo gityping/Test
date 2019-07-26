@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/baseColor"
+        android:padding="15dp">
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/top_icon_back2"
+            android:layout_gravity="center|left"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="意见反馈"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textSize="16sp"
+            android:textColor="#ffffff"
+            />
+
+    </FrameLayout>
+    <EditText
+        android:id="@+id/et_content"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:padding="15dp"
+        android:layout_margin="15dp"
+        android:hint="请输入你要反馈的内容"
+        android:gravity="top"
+        android:background="@drawable/bg_edit"
+        />
+    <EditText
+        android:id="@+id/et_contact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_margin="15dp"
+        android:layout_marginTop="30dp"
+        android:hint="请输入您的联系方式（电话、邮箱）"
+        android:gravity="top"
+        android:background="@drawable/bg_edit"
+        />
+    <Button
+        android:id="@+id/bt_commit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="提交"
+        android:background="@drawable/bg_btn"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:padding="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="100dp"
+        />
+</LinearLayout>

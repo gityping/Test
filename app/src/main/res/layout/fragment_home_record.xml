@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bgColor">
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/baseColor"
+    android:padding="15dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="登记助手"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:layout_gravity="center"
+        />
+    <ImageView
+        android:id="@+id/iv_add"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/top_icon_add"
+        android:layout_gravity="center|right"
+        />
+</FrameLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+    </androidx.recyclerview.widget.RecyclerView>
+    <ImageView
+        android:id="@+id/iv_null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/message_icon_list_shuju"
+        android:layout_gravity="center"
+        android:layout_marginTop="200dp"
+        android:visibility="gone"
+        />
+</LinearLayout>
