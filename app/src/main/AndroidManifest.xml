@@ -32,6 +32,21 @@
         <activity android:name=".activity.FeedbackActivity"/>
         <activity android:name=".activity.AddPeopleActivity"/>
         <activity android:name=".activity.PeopleDetailsActivity"/>
+        <activity android:name="me.iwf.photopicker.PhotoPickerActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            />
+
+        <activity android:name="me.iwf.photopicker.PhotoPagerActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <!--<provider-->
+        <!--android:name="android.support.v4.content.FileProvider"-->
+        <!--android:authorities="${applicationId}.fileProvider"-->
+        <!--android:exported="false"-->
+        <!--android:grantUriPermissions="true">-->
+        <!--<meta-data-->
+        <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
+        <!--android:resource="@xml/provider_paths"/>-->
+        <!--</provider>-->
     </application>
 
 </manifest>

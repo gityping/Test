@@ -14,9 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.tianao.peopledata.R;
-import com.tianao.peopledata.activity.AddPeopleActivity;
 import com.tianao.peopledata.activity.PeopleDetailsActivity;
-import com.tianao.peopledata.model.Medicines;
 import com.tianao.peopledata.model.People;
 
 import java.util.List;
@@ -39,7 +37,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.MyViewHold
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, final int i) {
         myViewHolder.tv_name.setText(data.get(i).getName());
-        myViewHolder.tv_sex.setText(data.get(i).getSex() + "  " + data.get(i).getSex() + "  " + data.get(i).getHy());
+        myViewHolder.tv_sex.setText(data.get(i).getAge() + "  " + data.get(i).getSex() + "  " + data.get(i).getHy());
         myViewHolder.tv_tel.setText(data.get(i).getTel());
         myViewHolder.tv_address.setText(data.get(i).getCity());
         Glide.with(context).load(data.get(i).getImg()).into(myViewHolder.iv_header);

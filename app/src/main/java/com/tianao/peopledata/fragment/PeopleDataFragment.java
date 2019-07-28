@@ -36,6 +36,7 @@ import lecho.lib.hellocharts.model.PieChartData;
 import lecho.lib.hellocharts.model.PointValue;
 import lecho.lib.hellocharts.model.SliceValue;
 import lecho.lib.hellocharts.model.SubcolumnValue;
+import lecho.lib.hellocharts.util.ChartUtils;
 import lecho.lib.hellocharts.view.ColumnChartView;
 import lecho.lib.hellocharts.view.PieChartView;
 
@@ -69,6 +70,7 @@ public class PeopleDataFragment extends Fragment {
     private ArrayList<IBarData> mDataList = new ArrayList<>();
     private BarData mBarData = new BarData();
     private ArrayList<PointF> mPointArrayList = new ArrayList<>();
+    private List<Integer> allData = new ArrayList<>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -223,6 +225,12 @@ public class PeopleDataFragment extends Fragment {
                 oldCount++;
             }
         }
+        allData.add(manCount);
+        allData.add(womanCount);
+        allData.add(innerCityCount);
+        allData.add(outCityCount);
+        allData.add(youngerCount);
+        allData.add(oldCount);
         List<SliceValue> values=new ArrayList<>();
         SliceValue sliceValue=new SliceValue((float) manCount,0xff0000ff);
         sliceValue.setLabel("男");
@@ -267,6 +275,61 @@ public class PeopleDataFragment extends Fragment {
 //        histogram.setValueName("成人");
 //        myData.add(histogram);
 //        histogramView.setData(myData);
+        generateDefaultData();
+
+    }
+    private void generateDefaultData() {
+        int numSubcolumns = 1;
+        int numColumns = 6;
+        // Column can have many subcolumns, here by default I use 1 subcolumn in each of 8 columns.
+        List<Column> columns = new ArrayList<Column>();
+        List<SubcolumnValue> values;
+        //底部标题
+        List<String> title = new ArrayList<>();
+        //X、Y轴值list
+        List<AxisValue> axisXValues = new ArrayList<>();
+        title.add("男");
+        title.add("女");
+        title.add("在家");
+        title.add("外出");
+        title.add("儿童");
+        title.add("成人");
+        //对每个集合的柱子进行遍历
+        for (int i = 0; i < 6; i++) {
+            //设置X轴的柱子所对应的属性名称(底部文字)
+            axisXValues.add(new AxisValue(i).setLabel(title.get(i)));
+            //将每个属性得列全部添加到List中
+            //添加了7个大柱子Column,单个大柱子里面mPointValues大小为3（自行调整)
+        }
+        for (int i = 0; i < numColumns; ++i) {
+
+            values = new ArrayList<SubcolumnValue>();
+            for (int j = 0; j < numSubcolumns; ++j) {
+                values.add(new SubcolumnValue(allData.get(i), ChartUtils.pickColor()));
+            }
+
+            Column column = new Column(values);
+            column.setHasLabels(true);
+            column.setHasLabelsOnlyForSelected(true);
+            columns.add(column);
+        }
+
+        ColumnChartData data = new ColumnChartData(columns);
+        if (true) {
+            Axis axisX = new Axis(axisXValues);
+            Axis axisY = new Axis().setHasLines(true);
+            if (true) {
+                axisX.setName("人员数据分析");
+                axisY.setName("人数");
+            }
+            data.setAxisXBottom(axisX);
+            data.setAxisYLeft(axisY);
+        } else {
+            data.setAxisXBottom(null);
+            data.setAxisYLeft(null);
+        }
+
+        column.setColumnChartData(data);
 
     }
     public void setChartViewData(ColumnChartView chart) {

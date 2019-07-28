@@ -21,6 +21,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
 import com.tianao.peopledata.R;
 import com.tianao.peopledata.model.People;
 import com.tianao.peopledata.util.ACache;
@@ -94,6 +98,7 @@ public class PeopleDetailsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        list.clear();
         peopleJsonArray = aCache.getAsJSONArray("peopleList");
         if (null != peopleJsonArray) {
             for (int i = 0; i < peopleJsonArray.length(); i++) {
@@ -124,6 +129,7 @@ public class PeopleDetailsActivity extends AppCompatActivity {
         tv_hy.setText(getIntent().getStringExtra("hy"));
         et_tel.setText(getIntent().getStringExtra("tel"));
         tv_city.setText(getIntent().getStringExtra("city"));
+        Glide.with(PeopleDetailsActivity.this).load(getIntent().getStringExtra("img")).into(iv_image);
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,31 +185,10 @@ public class PeopleDetailsActivity extends AppCompatActivity {
         iv_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ISListConfig config = new ISListConfig.Builder()
-                        // 是否多选
-                        .multiSelect(false)
-                        .btnText("Confirm")
-                        // 确定按钮背景色
-                        //.btnBgColor(Color.parseColor(""))
-                        // 确定按钮文字颜色
-                        .btnTextColor(Color.WHITE)
-                        // 使用沉浸式状态栏
-                        .statusBarColor(Color.parseColor("#3F51B5"))
-                        // 返回图标ResId
-                        .backResId(R.drawable.back)
-                        .title("Images")
-                        .titleColor(Color.WHITE)
-                        .titleBgColor(Color.parseColor("#3F51B5"))
-                        .allImagesText("All Images")
-                        .needCrop(true)
-                        .cropSize(1, 1, 200, 200)
-                        // 第一个是否显示相机
-                        .needCamera(true)
-                        // 最大选择图片数量
-                        .maxNum(9)
-                        .build();
-
-                ISNav.getInstance().toListActivity(this, config, REQUEST_LIST_CODE);
+                PictureSelector.create(PeopleDetailsActivity.this)
+                        .openGallery(PictureMimeType.ofImage())
+                        .selectionMode(PictureConfig.SINGLE)
+                        .forResult(PictureConfig.CHOOSE_REQUEST);
             }
         });
         bt_add.setOnClickListener(new View.OnClickListener() {
@@ -293,21 +278,21 @@ public class PeopleDetailsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_LIST_CODE && resultCode == RESULT_OK && data != null) {
-            List<String> pathList = data.getStringArrayListExtra("result");
-
-            // 测试Fresco
-            iv_image.setImageURI(Uri.parse("file://"+pathList.get(pathList.size()-1)));
-            for (String path : pathList) {
-//                tvResult.append(path + "\n");
-                imgUrl = path;
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PictureConfig.CHOOSE_REQUEST:
+                    // 图片、视频、音频选择结果回调
+                    List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+                    Log.d("uuuuuuuuuuuu", "onActivityResult: " + selectList.get(0).getPath().toString());
+                    imgUrl = selectList.get(0).getPath().toString();
+                    Glide.with(PeopleDetailsActivity.this).load(selectList.get(0).getPath().toString()).into(iv_image);
+                    // 例如 LocalMedia 里面返回三种path
+                    // 1.media.getPath(); 为原图path
+                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true  注意：音视频除外
+                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
+                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
+                    break;
             }
-            Log.e("IMG==",imgUrl);
-        } else if (requestCode == REQUEST_CAMERA_CODE && resultCode == RESULT_OK && data != null) {
-            String path = data.getStringExtra("result");
-            imgUrl = path;
-//            tvResult.append(path + "\n");
-            Log.e("IMG1==",imgUrl);
         }
     }
 }
